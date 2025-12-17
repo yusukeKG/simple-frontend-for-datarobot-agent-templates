@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="base-path" content="{{ base_path }}">
+    <title>DataRobot Agent Chat</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DataRobot Agent Chat</h1>
+            <p class="subtitle">エージェントAIと会話しましょう</p>
+        </header>
+        
+        <main>
+            <div class="chat-container">
+                <div class="config-status" id="configStatus">
+                    <span class="status-indicator" id="statusIndicator">●</span>
+                    <span id="statusText">接続を確認中...</span>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            <strong>Agent:</strong> こんにちは!何についてお話ししましょうか?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <form id="chatForm" class="chat-form">
+                        <input 
+                            type="text" 
+                            id="messageInput" 
+                            class="message-input" 
+                            placeholder="メッセージを入力してください..." 
+                            autocomplete="off"
+                            required
+                        >
+                        <button type="submit" class="send-button" id="sendButton">
+                            送信
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 DataRobot Agent Chat</p>
+        </footer>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>

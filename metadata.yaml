@@ -1,0 +1,16 @@
+name: DataRobot Agent Chat
+version: "1.0.1"
+description: A web application to chat with DataRobot deployed agents
+entrypoint: start-app.sh
+port: 8080
+runtimeParameterDefinitions:
+  - fieldName: DATAROBOT_API_TOKEN
+    type: string
+    description: DataRobot API Token for authentication
+  - fieldName: DATAROBOT_DEPLOYMENT_ID
+    type: string
+    description: DataRobot deployment ID to use for agent chat
+  - fieldName: DATAROBOT_ENDPOINT
+    type: string
+    description: DataRobot API endpoint URL (e.g., https://app.jp.datarobot.com/api/v2)
+    defaultValue: https://app.jp.datarobot.com/api/v2
