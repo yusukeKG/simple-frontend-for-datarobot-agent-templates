@@ -1,4 +1,4 @@
-# DataRobot Agent Web Application
+# Simple Frontend for DataRobot Agent Templates
 
 DataRobotのエージェントAIとチャット形式でやり取りできるWebアプリケーションです。Flaskバックエンドと、モダンなレスポンシブデザインのフロントエンドで構成されています。
 
