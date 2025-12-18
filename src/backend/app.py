@@ -82,7 +82,10 @@ def server_error(e):
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 8080))
-    debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    
+    # FLASK_DEBUGの判定を修正（'1', 'true', 'True', 'yes', 'on'のいずれかで有効）
+    flask_debug = os.environ.get('FLASK_DEBUG', '').lower()
+    debug = flask_debug in ('1', 'true', 'yes', 'on')
     
     logger.info("="*50)
     logger.info("Starting DataRobot Agent Chat Application")

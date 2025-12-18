@@ -7,7 +7,6 @@ DataRobotのエージェントAIとチャット形式でやり取りできるWeb
 - 🤖 DataRobotエージェントデプロイメントとのリアルタイムチャット
 - 💬 直感的なチャットインターフェース
 - 🎨 レスポンシブデザイン（PC・タブレット・スマートフォン対応）
-- ⚡ 非同期処理によるスムーズなユーザー体験
 - 🔒 安全な環境変数による設定管理
 
 ## プロジェクト構成
@@ -161,19 +160,35 @@ python -m src.backend.app
 デバッグモードでアプリケーションを起動：
 
 ```bash
-export FLASK_ENV=development
+# デバッグモードで起動（コード変更時に自動再起動）
+export FLASK_DEBUG=1
 python -m src.backend.app
+
+# 通常モードに戻す場合（環境変数を削除）
+unset FLASK_DEBUG
+python -m src.backend.app
+
+# または、ワンライナーでデバッグモード起動（環境変数が残らない）
+FLASK_DEBUG=1 python -m src.backend.app
 ```
+
+**注意**: 
+- `export FLASK_DEBUG=1`を実行すると、現在のターミナルセッションでは環境変数が保持されます
+- 通常モードに戻すには`unset FLASK_DEBUG`で環境変数を削除してください
+- デバッグモードは開発環境専用です。本番環境では使用しないでください
 
 ### コードの変更
 
 - **バックエンド**: \`src/backend/\`配下のPythonファイルを編集
 - **フロントエンド**: \`src/frontend/\`配下のHTML/CSS/JSファイルを編集
-- ファイル保存後、ブラウザをリロードして変更を確認
+- デバッグモード時は、バックエンドのコード変更で自動的にサーバーが再起動します
+- フロントエンドの変更は、ブラウザをリロードして確認してください
 
 ## デプロイ
 
-### Dockerを使用したデプロイ
+**重要**: 本番環境では必ずGunicornまたはDockerを使用してください。`python -m src.backend.app`での直接起動は開発専用です。
+
+### Dockerを使用したデプロイ（推奨）
 
 ```bash
 # Dockerイメージのビルド
@@ -186,7 +201,12 @@ docker run -p 8080:8080 --env-file .env datarobot-webapp
 ### Gunicornを使用した本番環境デプロイ
 
 ```bash
+# 本番環境での起動
 gunicorn --bind 0.0.0.0:8080 --workers 4 src.backend.app:app
+
+# ワーカー数の推奨値: (CPUコア数 × 2) + 1
+# 例: 4コアの場合
+gunicorn --bind 0.0.0.0:8080 --workers 9 src.backend.app:app
 ```
 
 ## トラブルシューティング
