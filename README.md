@@ -36,7 +36,7 @@ datarobot-webapp/
 └── README.md                           # このファイル
 ```
 
-## セットアップ
+## ローカルでの開発セットアップ
 
 ### 前提条件
 
@@ -81,8 +81,8 @@ pip install -r requirements.txt
 #### オプション A: 起動スクリプトを使用
 
 ```bash
-chmod +x start-app.sh
-./start-app.sh
+chmod +x start-app.sh  # 実行権限を付与（オプション）
+./start-app.sh  # アプリケーションの起動
 ```
 
 #### オプション B: 直接Pythonで起動
@@ -91,11 +91,11 @@ chmod +x start-app.sh
 python -m src.backend.app
 ```
 
-アプリケーションは \`http://localhost:5000\` で起動します。
+アプリケーションは \`http://localhost:8080\` で起動します。
 
 ## 使用方法
 
-1. ブラウザで \`http://localhost:5000\` にアクセス
+1. ブラウザで \`http://localhost:8080\` にアクセス
 2. チャット画面が表示されます
 3. メッセージ入力欄に質問やプロンプトを入力
 4. 「送信」ボタンをクリックまたはEnterキーで送信
@@ -180,13 +180,13 @@ python -m src.backend.app
 docker build -t datarobot-webapp .
 
 # コンテナの起動
-docker run -p 5000:5000 --env-file .env datarobot-webapp
+docker run -p 8080:8080 --env-file .env datarobot-webapp
 ```
 
 ### Gunicornを使用した本番環境デプロイ
 
 ```bash
-gunicorn --bind 0.0.0.0:5000 --workers 4 src.backend.app:app
+gunicorn --bind 0.0.0.0:8080 --workers 4 src.backend.app:app
 ```
 
 ## トラブルシューティング
