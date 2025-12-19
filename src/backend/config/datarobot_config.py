@@ -1,4 +1,7 @@
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 # ローカル開発用: .envファイルがあれば読み込む
 try:
@@ -10,11 +13,29 @@ except ImportError:
 
 class DataRobotConfig:
     def __init__(self):
-        # ランタイムパラメーターは環境変数として自動注入される
-        # .strip()で前後の空白を除去
-        self.api_token = os.environ.get('DATAROBOT_API_TOKEN', '').strip()
-        self.endpoint = os.environ.get('DATAROBOT_ENDPOINT', '').strip()
-        self.deployment_id = os.environ.get('DATAROBOT_DEPLOYMENT_ID', '').strip()
+        logger.info("=== DataRobotConfig Initialization ===")
+        
+        # DataRobot環境ではMLOPS_RUNTIME_PARAM_DATAROBOT_*を優先、
+        # ローカル開発ではDATAROBOT_*を使用
+        self.api_token = (
+            os.environ.get('MLOPS_RUNTIME_PARAM_DATAROBOT_API_TOKEN', '') or 
+            os.environ.get('DATAROBOT_API_TOKEN', '')
+        ).strip()
+        
+        self.endpoint = (
+            os.environ.get('MLOPS_RUNTIME_PARAM_DATAROBOT_ENDPOINT', '') or 
+            os.environ.get('DATAROBOT_ENDPOINT', '')
+        ).strip()
+        
+        self.deployment_id = (
+            os.environ.get('MLOPS_RUNTIME_PARAM_DATAROBOT_DEPLOYMENT_ID', '') or 
+            os.environ.get('DATAROBOT_DEPLOYMENT_ID', '')
+        ).strip()
+        
+        logger.info(f"API Token: {'[SET]' if self.api_token else '[NOT SET]'}")
+        logger.info(f"Endpoint: {self.endpoint or '[NOT SET]'}")
+        logger.info(f"Deployment ID: {self.deployment_id or '[NOT SET]'}")
+        logger.info("=" * 50)
         
     def get_api_token(self):
         return self.api_token

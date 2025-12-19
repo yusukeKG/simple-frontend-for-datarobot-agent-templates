@@ -1,0 +1,51 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Environment files (should be set via runtime parameters)
+.env
+.env.local
+.env.*
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation and non-essential files
+README.md
+*.md
+docs/
+
+# Logs
+*.log
+
+# Testing
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Build artifacts
+dist/
+build/
+*.egg-info/

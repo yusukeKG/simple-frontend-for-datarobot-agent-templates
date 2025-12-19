@@ -1,6 +1,11 @@
 # Simple Frontend for DataRobot Agent Templates
 
-DataRobotのエージェントAIとチャット形式でやり取りできるWebアプリケーションです。Flaskバックエンドと、モダンなレスポンシブデザインのフロントエンドで構成されています。
+DataRobot Agent TemplatesでDataRobotにデプロイしたエージェントとチャット形式でやり取りできる簡易的なWebアプリケーションです。Flaskバックエンドと、モダンなレスポンシブデザインのフロントエンドで構成されています。
+
+[DataRobot Agent Templates]
+- https://github.com/datarobot-community/datarobot-agent-templates
+- ver.11.4.0まで動作検証済み
+
 
 ## 機能
 
@@ -28,10 +33,10 @@ datarobot-webapp/
 │       │   └── styles.css              # スタイルシート
 │       └── js/
 │           └── main.js                 # フロントエンドJavaScript
-├── requirements.txt                     # Python依存関係
-├── .env.template                        # 環境変数テンプレート
+├── requirements.txt                    # Python依存関係
+├── .env.template                       # 環境変数テンプレート
 ├── .env                                # 環境変数設定（gitignore対象）
-├── start-app.sh                         # 起動スクリプト
+├── start-app.sh                        # 起動スクリプト
 └── README.md                           # このファイル
 ```
 
@@ -60,7 +65,7 @@ DATAROBOT_API_TOKEN=your_api_token_here
 # DataRobotエンドポイント（例: https://app.jp.datarobot.com/api/v2）
 DATAROBOT_ENDPOINT=your_endpoint_here
 
-# エージェントのデプロイメントID（task deployコマンドの出力から取得）
+# エージェントのデプロイメントID（DataRobotのUI、URL、もしくはtask deployコマンドの出力から取得可能）
 DATAROBOT_DEPLOYMENT_ID=your_deployment_id_here
 ```
 
@@ -77,12 +82,16 @@ pip install -r requirements.txt
 
 ### 3. アプリケーションの起動
 
-#### オプション A: 起動スクリプトを使用
+#### オプション A: 起動スクリプトを使用（推奨）
 
 ```bash
-chmod +x start-app.sh  # 実行権限を付与（オプション）
+chmod +x start-app.sh  # 実行権限を付与（初回のみ）
 ./start-app.sh  # アプリケーションの起動
 ```
+
+**注意**:
+- ローカル開発環境では、自動的にFlask開発サーバーが起動します。
+- なお、本番環境では `/opt/code` ディレクトリ配下に `start-app.sh` を配置することで、自動的に本番用のGunicornサーバーが起動します。DataRobotのカスタムアプリケーション環境もそのような構成になっています。
 
 #### オプション B: 直接Pythonで起動
 
@@ -186,28 +195,32 @@ FLASK_DEBUG=1 python -m src.backend.app
 
 ## デプロイ
 
-**重要**: 本番環境では必ずGunicornまたはDockerを使用してください。`python -m src.backend.app`での直接起動は開発専用です。
+### ローカル開発とデプロイ環境の違い
 
-### Dockerを使用したデプロイ（推奨）
+| 環境 | 起動方法 | サーバー | 用途 |
+|------|---------|---------|------|
+| **ローカル開発** | `./start-app.sh` | Flask開発サーバー | コード編集・デバッグ |
+| **DataRobot** | `./start-app.sh` (自動) | Gunicorn | 本番運用 |
 
-```bash
-# Dockerイメージのビルド
-docker build -t datarobot-webapp .
+`start-app.sh`はDataRobot環境（`/opt/code`）を自動判定し、適切なサーバーで起動します。
 
-# コンテナの起動
-docker run -p 8080:8080 --env-file .env datarobot-webapp
-```
+### DataRobot Custom Applicationsへのデプロイ
 
-### Gunicornを使用した本番環境デプロイ
+1. DataRobot UIにログイン
+2. **レジストリ** → **新しいアプリケーションソースを追加** を選択
+3. アプリケーション名を入力（例: "DataRobot Agent Chat"）
+4. プロジェクトファイル一式をアップロード
+5. ランタイムパラメーターを設定：
+   - `DATAROBT_DEPLOYMENT_ID`: 使用するエージェントのデプロイメントID
+   - `DATAROBT_API_TOKEN`: 自分のDataRobot APIトークン
+   - `DATAROBT_ENDPOINT`: DataRobotエンドポイントURL（デフォルト: `https://app.jp.datarobot.com/api/v2`）
+6. **Deploy** をクリック
 
-```bash
-# 本番環境での起動
-gunicorn --bind 0.0.0.0:8080 --workers 4 src.backend.app:app
+デプロイが完了すると、DataRobotが提供するURLでアプリケーションにアクセスできます。
 
-# ワーカー数の推奨値: (CPUコア数 × 2) + 1
-# 例: 4コアの場合
-gunicorn --bind 0.0.0.0:8080 --workers 9 src.backend.app:app
-```
+**重要**: 
+- DataRobot環境では、ランタイムパラメーターが自動的に`MLOPS_RUNTIME_PARAM_*`環境変数として注入されます
+- アプリケーションは自動的にこれらを読み取り、ローカル開発用の`DATAROBOT_*`環境変数も引き続きサポートします
 
 ## トラブルシューティング
 

@@ -111,8 +111,17 @@ class Agent:
             if not dep_id:
                 raise ValueError("Deployment ID is required")
             
-            # Construct the chat endpoint URL
-            chat_url = config.get_chat_endpoint()
+            # Construct the chat endpoint URL using dep_id
+            endpoint = config.get_endpoint()
+            if not endpoint:
+                raise ValueError("DATAROBOT_ENDPOINT is not configured")
+            
+            base_endpoint = endpoint.rstrip('/')
+            if base_endpoint.endswith('/api/v2'):
+                base_endpoint = base_endpoint[:-7]
+            chat_url = f"{base_endpoint}/api/v2/deployments/{dep_id}/chat/completions"
+            
+            logger.info(f"Using deployment_id: {dep_id}")
             
             # Prepare the request
             headers = {

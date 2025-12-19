@@ -1,5 +1,5 @@
 name: DataRobot Agent Chat
-version: "1.0.1"
+version: "1.0.5"
 description: A web application to chat with DataRobot deployed agents
 entrypoint: start-app.sh
 port: 8080
