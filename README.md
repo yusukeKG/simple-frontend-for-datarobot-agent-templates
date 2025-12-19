@@ -17,7 +17,6 @@ DataRobot Agent TemplatesでDataRobotにデプロイしたエージェントと�
 ## プロジェクト構成
 
 ```
-datarobot-webapp/
 ├── src/
 │   ├── backend/
 │   │   ├── app.py                      # Flaskアプリケーションのエントリーポイント
