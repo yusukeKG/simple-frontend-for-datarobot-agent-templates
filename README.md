@@ -35,7 +35,7 @@ datarobot-webapp/
 │           └── main.js                 # フロントエンドJavaScript
 ├── requirements.txt                    # Python依存関係
 ├── .env.template                       # 環境変数テンプレート
-├── .env                                # 環境変数設定（gitignore対象）
+├── .env                                # 環境変数設定（ローカル開発用、gitignore対象）
 ├── start-app.sh                        # 起動スクリプト
 └── README.md                           # このファイル
 ```
@@ -204,12 +204,13 @@ FLASK_DEBUG=1 python -m src.backend.app
 
 `start-app.sh`はDataRobot環境（`/opt/code`）を自動判定し、適切なサーバーで起動します。
 
-### DataRobot Custom Applicationsへのデプロイ
+### DataRobotカスタムアプリケーション環境へのデプロイ
 
 1. DataRobot UIにログイン
 2. **レジストリ** → **新しいアプリケーションソースを追加** を選択
-3. アプリケーション名を入力（例: "DataRobot Agent Chat"）
+3. アプリケーション名を任意に入力（例: "DataRobot Simple Agent Chat"）
 4. プロジェクトファイル一式をアップロード
+   - **注意**: `.env` はアップロードしないでください
 5. ランタイムパラメーターを設定：
    - `DATAROBT_DEPLOYMENT_ID`: 使用するエージェントのデプロイメントID
    - `DATAROBT_API_TOKEN`: 自分のDataRobot APIトークン
